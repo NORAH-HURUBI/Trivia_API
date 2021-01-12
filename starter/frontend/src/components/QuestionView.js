@@ -78,7 +78,7 @@ class QuestionView extends Component {
 
   submitSearch = (searchTerm) => {
     $.ajax({
-      url: `/questions`, //TODO: update request URL
+      url: `/questions/search`, //TODO: update request URL
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
@@ -98,6 +98,7 @@ class QuestionView extends Component {
         alert('Unable to load questions. Please try your request again')
         return;
       }
+
     })
   }
 
@@ -146,6 +147,7 @@ class QuestionView extends Component {
               questionAction={this.questionAction(q.id)}
             />
           ))}
+		  
           <div className="pagination-menu">
             {this.createPagination()}
           </div>

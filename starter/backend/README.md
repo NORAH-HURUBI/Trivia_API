@@ -52,43 +52,254 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
-## Tasks
+## API Documentation
 
-One note before you delve into your tasks: for each endpoint you are expected to define the endpoint and response data. The frontend will be a plentiful resource because it is set up to expect certain endpoints and response data formats already. You should feel free to specify endpoints in your own way; if you do so, make sure to update the frontend or you will get some unexpected behavior. 
-
-1. Use Flask-CORS to enable cross-domain requests and set response headers. 
-2. Create an endpoint to handle GET requests for questions, including pagination (every 10 questions). This endpoint should return a list of questions, number of total questions, current category, categories. 
-3. Create an endpoint to handle GET requests for all available categories. 
-4. Create an endpoint to DELETE question using a question ID. 
-5. Create an endpoint to POST a new question, which will require the question and answer text, category, and difficulty score. 
-6. Create a POST endpoint to get questions based on category. 
-7. Create a POST endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question. 
-8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
-9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
-
-REVIEW_COMMENT
-```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
-
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
+# GET Endpoints
 
 GET '/categories'
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Retrieves all available categories.
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+- Returns: all categories with its corresponding ids.
 
 ```
+Example:
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "success": true
+}
 
+```
+GET '/questions' OR GET '/questions?page=<page-number>'
+- Retrieves a paginated list of questions of all available categories.
+- Request Arguments: Page Number.
+- Returns: 
+        - All categories.
+        - Ten questions per page. 
+        - Category type for each question. 
+        - Total number of questions.
+
+```
+Example:/questions?page=1
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }, 
+    {
+      "answer": "Muhammad Ali", 
+      "category": 4, 
+      "difficulty": 1, 
+      "id": 9, 
+      "question": "What boxer's original name is Cassius Clay?"
+    }, 
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 12, 
+      "question": "Who invented Peanut Butter?"
+    }, 
+    {
+      "answer": "Lake Victoria", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 13, 
+      "question": "What is the largest lake in Africa?"
+    }, 
+    {
+      "answer": "The Palace of Versailles", 
+      "category": 3, 
+      "difficulty": 3, 
+      "id": 14, 
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 24
+}
+
+```
+GET '/categories/<int:category_id>/questions'
+- Retrieves a category and its all related questions.
+- Request Arguments: category id.
+- Returns: 
+        - Current category. 
+        - Related questions.
+        - Total number of questions.
+
+```
+Example:/categories/6/questions
+{
+  "current_category": 6, 
+  "questions": [
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }
+  ], 
+  "total_questions": 2
+}
+
+```
+# POST Endpoints
+
+POST '/questions'
+- Add a new question.
+- Request body: question, answer, difficulty and category.
+- Returns: 
+        - Created question id.
+        - Total number of questions.
+
+```
+Example:curl -POST -H "Content-Type: application/json" -d '{"question":"test question","answer":"test answer","difficulty":"3","category":"4"}'
+http://127.0.0.1:5000/questions
+
+  {
+  "created": 54,
+  "success": true,
+  "total_questions": 26
+}
+```
+POST '/questions/search'
+- Search for questions that contain specified search term.
+- Request body:search term.
+- Returns:
+        - Related questions to search term.
+        - Total number of questions.
+
+```
+Example: curl -POST -H "Content-Type: application/json" -d '{"searchTerm":"Africa"}' http://127.0.0.1:5000/questions/search
+{
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    }
+  ],
+  "success": true,
+  "total_questions": 1
+}
+```
+POST '/quizzes'
+- A game to pick random questions that either include all categories, or only questions belong to for one specific category.
+- Request body:
+        - All which include maximum five random questions from all categories. 
+     Or
+        - Maximum five random questions from chosen category.
+- Returns:
+        - What the user specify. 
+
+# DELETE Endpoint
+
+DELETE '/questions/<question_id>'
+- Delete a question with specified id.
+- Request Arguments: question id.
+- Returns:
+        - Deleted question id.
+        - Current questions.
+        - Total number of questions.
+```
+Example:curl -X DELETE http://localhost:5000/questions/54
+{
+  "deleted": "54",
+  "success": true,
+  "total_questions": 41
+}
+```
+# Error Handling
+404 error 
+This error occurs when server not able to locate resources or requested arguments.
+
+```
+Example: http://localhost:5000/categories/443/questions
+{
+  "error": 404, 
+  "message": "Resource Not Found", 
+  "success": false
+}
+
+```
+422 error 
+This error occurs when server not able to process request body.
+
+```
+Example: curl -POST -H "Content-Type: application/json" -d '{"searchTerm":""}' http://127.0.0.1:5000/questions/search
+{
+  "error": 422,
+  "message": "Unprocessable Entity",
+  "success": false
+}
+
+```
 
 ## Testing
 To run the tests, run
