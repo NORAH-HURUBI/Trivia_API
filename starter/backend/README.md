@@ -52,13 +52,13 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
-## API Documentation
+# API Documentation
 
-# GET Endpoints
+## GET Endpoints
 
 GET '/categories'
 - Retrieves all available categories.
-- Request Arguments: None
+- Request Arguments: None.
 - Returns: all categories with its corresponding ids.
 
 ```
@@ -80,10 +80,10 @@ GET '/questions' OR GET '/questions?page=<page-number>'
 - Retrieves a paginated list of questions of all available categories.
 - Request Arguments: Page Number.
 - Returns: 
-        - All categories.
-        - Ten questions per page. 
-        - Category type for each question. 
-        - Total number of questions.
+  - All categories.
+  - Ten questions per page. 
+  - Category type for each question. 
+  - Total number of questions.
 
 ```
 Example:/questions?page=1
@@ -178,9 +178,9 @@ GET '/categories/<int:category_id>/questions'
 - Retrieves a category and its all related questions.
 - Request Arguments: category id.
 - Returns: 
-        - Current category. 
-        - Related questions.
-        - Total number of questions.
+  - Current category. 
+  - Related questions.
+  - Total number of questions.
 
 ```
 Example:/categories/6/questions
@@ -206,14 +206,14 @@ Example:/categories/6/questions
 }
 
 ```
-# POST Endpoints
+## POST Endpoints
 
 POST '/questions'
 - Add a new question.
 - Request body: question, answer, difficulty and category.
 - Returns: 
-        - Created question id.
-        - Total number of questions.
+  - Created question id.
+  - Total number of questions.
 
 ```
 Example:curl -POST -H "Content-Type: application/json" -d '{"question":"test question","answer":"test answer","difficulty":"3","category":"4"}'
@@ -229,8 +229,8 @@ POST '/questions/search'
 - Search for questions that contain specified search term.
 - Request body:search term.
 - Returns:
-        - Related questions to search term.
-        - Total number of questions.
+  - Related questions to search term.
+  - Total number of questions.
 
 ```
 Example: curl -POST -H "Content-Type: application/json" -d '{"searchTerm":"Africa"}' http://127.0.0.1:5000/questions/search
@@ -252,13 +252,13 @@ Example: curl -POST -H "Content-Type: application/json" -d '{"searchTerm":"Afric
 POST '/quizzes'
 - A game to pick random questions that either include all categories, or only questions belong to for one specific category.
 - Request body:
-        - All which include maximum five random questions from all categories. 
+  - All which include maximum five random questions from all categories. 
      Or
-        - Maximum five random questions from chosen category.
+  - Maximum five random questions from chosen category.
 - Returns:
-        - What the user specify. 
+  - What the user specify. 
 
-# DELETE Endpoint
+## DELETE Endpoint
 
 DELETE '/questions/<question_id>'
 - Delete a question with specified id.
@@ -275,7 +275,7 @@ Example:curl -X DELETE http://localhost:5000/questions/54
   "total_questions": 41
 }
 ```
-# Error Handling
+## Error Handling
 404 error 
 This error occurs when server not able to locate resources or requested arguments.
 
